@@ -26,7 +26,7 @@ SECRET_KEY = '*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'user',
     'board'
@@ -131,6 +132,8 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ACCOUNT_USERNAME_REQUIRED = False
+
+AUTH_USER_MODEL = 'user.user'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
