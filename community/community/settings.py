@@ -132,6 +132,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ACCOUNT_USERNAME_REQUIRED = False
 
+AUTH_USER_MODEL = 'user.user'
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
