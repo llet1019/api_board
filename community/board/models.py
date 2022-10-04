@@ -16,9 +16,9 @@ class Category(models.Model):
 
 class Board(models.Model):
     category = models.ForeignKey(
-        Category, null=False, blank=False, related_name='board_category', verbose_name='카테고리', on_delete=models.SET_NULL)
+        Category, null=True, blank=False, related_name='board_category', verbose_name='카테고리', on_delete=models.SET_NULL)
     user = models.ForeignKey(
-        User, null=False, blank=False, related_name='board_user', verbose_name='작성자', on_delete=models.SET_NULL
+        User, null=True, blank=False, related_name='board_user', verbose_name='작성자', on_delete=models.SET_NULL
     )
     context = models.TextField(null=False, blank=False, verbose_name='본문 내용')
     view_cnt = models.PositiveIntegerField(null=False, blank=False, default=0, verbose_name='조회수')
@@ -33,10 +33,10 @@ class Board(models.Model):
 
 class BoardLike(models.Model):
     board = models.ForeignKey(
-        Board, null=False, blank=False, related_name='board_like_board', verbose_name='게시물', on_delete=models.SET_NULL
+        Board, null=True, blank=False, related_name='board_like_board', verbose_name='게시물', on_delete=models.SET_NULL
     )
     user = models.ForeignKey(
-        User, null=False, blank=False, related_name='board_like_user', verbose_name='작성자', on_delete=models.CASCADE
+        User, null=True, blank=False, related_name='board_like_user', verbose_name='작성자', on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일', )
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정일', )
@@ -49,10 +49,10 @@ class BoardLike(models.Model):
 
 class Comment(models.Model):
     board = models.ForeignKey(
-        Board, null=False, blank=False, related_name='comment_board', verbose_name='게시물', on_delete=models.SET_NULL
+        Board, null=True, blank=False, related_name='board_comments', verbose_name='게시물', on_delete=models.SET_NULL
     )
     user = models.ForeignKey(
-        User, null=False, blank=False, related_name='comment_user', verbose_name='작성자', on_delete=models.CASCADE
+        User, null=False, blank=False, related_name='user_comments', verbose_name='작성자', on_delete=models.CASCADE
     )
     context = models.TextField(null=False, blank=False, verbose_name='본문 내용')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일', )
@@ -66,10 +66,10 @@ class Comment(models.Model):
 
 class CommentLike(models.Model):
     comment = models.ForeignKey(
-        Comment, null=False, blank=False, related_name='comment_like_user', verbose_name='댓글', on_delete=models.CASCADE
+        Comment, null=False, blank=False, related_name='like_comments', verbose_name='댓글', on_delete=models.CASCADE
     )
     user = models.ForeignKey(
-        User, null=False, blank=False, related_name='comment_user', verbose_name='작성자', on_delete=models.CASCADE
+        User, null=False, blank=False, related_name='user_like_comments', verbose_name='작성자', on_delete=models.CASCADE
     )
     context = models.TextField(null=False, blank=False, verbose_name='본문 내용')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일', )
