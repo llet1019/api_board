@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,6 +10,17 @@ from user.models import User
 
 
 class BoardViewSets(viewsets.ModelViewSet):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['user_id', 'category_id', 'title', 'context'],
+            properties={
+                'user_id': openapi.Schema(type=openapi.FORMAT_INT64),
+                'category_id': openapi.Schema(type=openapi.FORMAT_INT64),
+                'title': openapi.Schema(type=openapi.TYPE_STRING),
+                'context': openapi.Schema(type=openapi.TYPE_STRING)
+            },
+        ), )
     @action(detail=True, methods=['post'])
     def create(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -36,6 +49,16 @@ class BoardViewSets(viewsets.ModelViewSet):
                 }
                 return Response(result_data, status=400)
 
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['category_id', 'title', 'context'],
+            properties={
+                'category_id': openapi.Schema(type=openapi.FORMAT_INT64),
+                'title': openapi.Schema(type=openapi.TYPE_STRING),
+                'context': openapi.Schema(type=openapi.TYPE_STRING)
+            },
+        ), )
     @action(detail=True, methods=['patch'])
     def update(self, request, *args, **kwargs):
         board = Board.objects.get(id=kwargs['board_id'])
@@ -125,7 +148,7 @@ class BoardViewSets(viewsets.ModelViewSet):
             }
         return Response(result_data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['delete'])
     def destroy(self, request, *args, **kwargs):
         try:
             board = Board.objects.get(id=kwargs['board_id'])

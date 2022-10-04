@@ -20,6 +20,7 @@ class Board(models.Model):
     user = models.ForeignKey(
         User, null=True, blank=False, related_name='board_user', verbose_name='작성자', on_delete=models.SET_NULL
     )
+    title = models.CharField(null=False, blank=False, max_length=64, verbose_name='제목')
     context = models.TextField(null=False, blank=False, verbose_name='본문 내용')
     view_cnt = models.PositiveIntegerField(null=False, blank=False, default=0, verbose_name='조회수')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일', )
