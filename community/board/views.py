@@ -124,3 +124,28 @@ class BoardViewSets(viewsets.ModelViewSet):
                 'message': f'{str(e)} 오류가 발생했습니다.'
             }
         return Response(result_data)
+
+    @action(detail=True, methods=['get'])
+    def destroy(self, request, *args, **kwargs):
+        try:
+            board = Board.objects.get(id=kwargs['board_id'])
+            if board.user != request.user:
+                result_data = {
+                    'code': 502,
+                    'data': {},
+                    'message': f'글은 작성자만 삭제할 수 있습니다.'
+                }
+            else:
+                board.delete()
+                result_data = {
+                    'code': 200,
+                    'data': {},
+                    'message': f'게시물 삭제에 성공하였습니다.'
+                }
+        except Exception as e:
+            result_data = {
+                'code': 501,
+                'data': {},
+                'message': f'{str(e)} 에러가 발생했습니다.'
+            }
+        return Response(result_data)
