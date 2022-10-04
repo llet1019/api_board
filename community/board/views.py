@@ -35,3 +35,36 @@ class BoardViewSets(viewsets.ModelViewSet):
                     'message': f'{str(e)} 오류가 발생하였습니다.'
                 }
                 return Response(result_data, status=400)
+
+    @action(detail=True, methods=['patch'])
+    def update(self, request, *args, **kwargs):
+        board = Board.objects.get(id=kwargs['board_id'])
+        try:
+            if board.user != request.user:
+                result_data = {
+                    'code': 502,
+                    'data': {},
+                    'message': f'글은 작성자만 수정할 수 있습니다.'
+                }
+            else:
+                serializer = BoardSerializer(board, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    result_data = {
+                        'code': 200,
+                        'data': serializer.data,
+                        'message': '수정에 성공하였습니다.'
+                    }
+                else:
+                    result_data = {
+                        'code': 500,
+                        'data': {},
+                        'message': '수정에 실패하였습니다.'
+                    }
+        except Exception as e:
+            result_data = {
+                'code': 501,
+                'data': {},
+                'message': f'{str(e)} 오류가 발생했습니다.'
+            }
+        return Response(result_data)
