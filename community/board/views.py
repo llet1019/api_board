@@ -96,6 +96,9 @@ class BoardViewSets(viewsets.ModelViewSet):
     def get_info(self, request, *args, **kwargs):
         try:
             board = Board.objects.get(id=kwargs['board_id'])
+            board.view_cnt += 1
+            board.save()
+
             serializer = BoardSerializer(board)
             result_data = {
                 'code': 200,
